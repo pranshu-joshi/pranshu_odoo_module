@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="view_cars_form" model="ir.ui.view">
+        <field name="name">view.fleet_management.form</field>
+        <field name="model">automotives.cars</field>
+        <field name="arch" type="xml">
+            <form>
+                 <header>
+                    <label for="name"/>
+                            <field name="name" placeholder="Car's Name"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Favourite" bg_color="bg-info" attrs="{'invisible': [('brand', '!=', 'tata')]}"/>
+                    <group colspan="4" col="4">
+                         <label for="name"/>
+                            <h1>
+                                <field name="name" placeholder="Car's Name"/>
+                            </h1>
+                        <field name="car_id" required="1"/>
+                        <field name="available" attrs="{'invisible': [('brand', '!=', 'tata')]}"/>
+                        <field name="dom"/>
+                        <field name="comments"/>
+                        <field name="template"/>
+                        <field name="brand" required="1"/>
+                        <label for="price" string="     "/>
+                        <field name="price" nolabel="1" placeholder="Price of car"/>
+                        <field name="onlyfour"/>
+                        <field name="active" invisible="1"/>
+                        <field name="password" password="1"/>
+                        <field name="email" widget="email"/>
+                        <field name="url" widget="url"/>
+                        <field name="priority" widget="priority"/>
+                        <field name="sign_in" widget="float_time"/>
+                        <field name="sign_out" widget="float_time"/>
+                        <field name="condition" widget="radio"/>
+                        <field name="cars"/> # relational field
+
+                    </group>
+                    <separator string="Comments"/>
+                    <field name="comments"/>
+                    <notebook>
+                        <page name="pg_notes" string="Notes">
+                            <field name="comments"/>
+                        </page>
+                        <page name="pg_tmpl" string="Template">
+                            <field name="template"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <h3>Footer</h3>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="view_cars_tree" model="ir.ui.view">
+        <field name="name">view.fleet_management.tree</field>
+        <field name="model">automotives.cars</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="car_id"/>
+                <field name="name"/>
+                <field name="available"/>
+                <field name="dom"/>
+                <field name="comments"/>
+                <field name="brand"/>
+<!--                <field name="cars"/> # relational field-->
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_cars" model="ir.actions.act_window">
+        <field name="name">Cars</field>
+        <field name="res_model">automotives.cars</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem id="menu_cars_main" name="Fleet Management"/>
+
+    <menuitem id="menu_cars_sub" name="Cars" parent="fleet_management.menu_cars_main" action="fleet_management.action_cars"/>
+
+    <record id="view_company_form" model="ir.ui.view"/>
+        <field name="name">view.company.form</field>
+        <field name="model">fleet.company</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" required="1"/> # any model will have one field mandatory
+                        <field name="code"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+
+    <record id="view_company_tree" model="ir.ui.view"/>
+        <field name="name">view.company.tree</field>
+        <field name="model">fleet.company</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/> # any model will have one field mandatorily
+                <field name="code"/>
+            </tree>
+        </field>
+
+    <record id="action_company" model="ir.actions.act_window">
+        <field name="name">Company</field>
+        <field name="res_model">fleet.company</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_fleet_config" name="Configuration" parent="menu_cars_main" sequence="100"/>
+
+    <menuitem id="menu_company" action="action_fleet.company" parent="menu_fleet_config"/>
+
+</odoo>
