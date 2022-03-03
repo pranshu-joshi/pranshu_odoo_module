@@ -6,12 +6,17 @@
         <field name="model">automotives.cars</field>
         <field name="arch" type="xml">
             <form>
-                 <header>
-                    <label for="name"/>
-                            <field name="name" placeholder="Car's Name"/>
+                <header>
+                   <field name="state" widget="statusbar" options="{'clickable':'1'}"/>
                 </header>
                 <sheet>
                     <widget name="web_ribbon" title="Favourite" bg_color="bg-info" attrs="{'invisible': [('brand', '!=', 'tata')]}"/>
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Car's Name"/>
+                        </h1>
+                        <field name='car_img' widget="image" class="oe_avatar" nolabel="1"/>
+                    <separator string=""/>
                     <group colspan="4" col="4">
                          <label for="name"/>
                             <h1>
@@ -34,17 +39,32 @@
                         <field name="sign_in" widget="float_time"/>
                         <field name="sign_out" widget="float_time"/>
                         <field name="condition" widget="radio"/>
-                        <field name="cars"/> # relational field
+                        <field name="company_id" widget="selection"/>
+                        <field name="com_value"/>
+                        <field name="currency_id"/>
+                        <field name="extra_info"/>
+                        <field name="params_store" filename="store_fname" />
+                        <field name="total_over_fet"/>
+                        <field name="total_avg_fet"/>
+                        <field name="total_percent_fet" widget="percentpie"/>
+                        <field name="store_fname" invisible="1" />
 
+                        <field name="parent_id"/>
                     </group>
                     <separator string="Comments"/>
                     <field name="comments"/>
                     <notebook>
-                        <page name="pg_notes" string="Notes">
-                            <field name="comments"/>
+                        <page name="pg_notes" string="Features">
+                            <field name="feature_id"/>
                         </page>
-                        <page name="pg_tmpl" string="Template">
-                            <field name="template"/>
+                        <page name="pg_tmpl" string="Suppliers">
+                            <field name="supplier_list" widget="many2many_tags"/>
+                        </page>
+                        <page name="pg_tmpl" string="Countries">
+                            <field name="country_list" widget="many2many_checkboxes"/>
+                        </page>
+                        <page name="name" string="Childs">
+                            <field name="child_ids"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -59,13 +79,16 @@
         <field name="model">automotives.cars</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="car_seq" widget="handle"/>
                 <field name="car_id"/>
                 <field name="name"/>
                 <field name="available"/>
                 <field name="dom"/>
                 <field name="comments"/>
-                <field name="brand"/>
-<!--                <field name="cars"/> # relational field-->
+                <field name="company_id"/>
+                <field name="state" widget="badge" decoration-success="state == 'ready'"
+                       decoration-info="state == 'review'" decoration-warning="state == 'in_repair'"
+                       decoration-danger="state == 'test'" decoration-primary="state == 'deal'"/>
             </tree>
         </field>
     </record>
@@ -81,38 +104,155 @@
 
     <menuitem id="menu_cars_sub" name="Cars" parent="fleet_management.menu_cars_main" action="fleet_management.action_cars"/>
 
-    <record id="view_company_form" model="ir.ui.view"/>
+    <record id="view_company_form" model="ir.ui.view">
         <field name="name">view.company.form</field>
-        <field name="model">fleet.company</field>
+        <field name="model">fleet_management.company</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
                     <group>
-                        <field name="name" required="1"/> # any model will have one field mandatory
+                        <field name="name" required="1"/>
                         <field name="code"/>
+                        <field name="child_ids"/>
+                        <field name="company_age"/>
                     </group>
                 </sheet>
             </form>
         </field>
+    </record>
 
-    <record id="view_company_tree" model="ir.ui.view"/>
+    <record id="view_company_tree" model="ir.ui.view">
         <field name="name">view.company.tree</field>
-        <field name="model">fleet.company</field>
+        <field name="model">fleet_management.company</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="name"/> # any model will have one field mandatorily
+                <field name="name"/>
                 <field name="code"/>
+                <field name="company_age"/>
             </tree>
         </field>
+    </record>
 
     <record id="action_company" model="ir.actions.act_window">
         <field name="name">Company</field>
-        <field name="res_model">fleet.company</field>
+        <field name="res_model">fleet_management.company</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_fleet_config" name="Configuration" parent="menu_cars_main" sequence="100"/>
+    <menuitem id="menu_fleet_management_config" name="Company" parent="fleet_management.menu_cars_main"/>
+    <menuitem id="menu_company" action="fleet_management.action_company" parent="fleet_management.menu_fleet_management_config" name="Company's List"/>
 
-    <menuitem id="menu_company" action="action_fleet.company" parent="menu_fleet_config"/>
+    <record id="view_features_form" model="ir.ui.view">
+        <field name="name">view.features.form</field>
+        <field name="model">fleet_management.features</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group colspan="4" col="4">
+                        <field name="ID" required="1"/>
+                        <field name="feature_name" required="1"/>
+                        <field name="Model"/>
+                        <field name="fet_v"/>
+                        <field name="fet_p"/>
+                        <field name="sub_fet_v"/>
+                        <field name="over_fet"/>
+                        <field name="avg_fet"/>
+                        <field name="per_fet"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_features_tree" model="ir.ui.view">
+        <field name="name">view.features.tree</field>
+        <field name="model">fleet_management.features</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="ID"/>
+                <field name="feature_name"/>
+                <field name="Model"/>
+                <field name="fet_v"/>
+                <field name="fet_p"/>
+                <field name="sub_fet_v"/>
+                <field name="over_fet"/>
+                <field name="avg_fet"/>
+                <field name="per_fet" widget="progressbar"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_suppliers_form" model="ir.ui.view">
+        <field name="name">view.suppliers.form</field>
+        <field name="model">fleet_management.suppliers</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="sup_id"/>
+                        <field name="sup_name"/>
+                        <field name="sup_age"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_suppliers_tree" model="ir.ui.view">
+        <field name="name">view.suppliers.tree</field>
+        <field name="model">fleet_management.suppliers</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sup_id"/>
+                <field name="sup_name"/>
+                <field name="sup_age"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_suppliers" model="ir.actions.act_window">
+        <field name="name">Suppliers</field>
+        <field name="res_model">fleet_management.suppliers</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_fleet_management_sup" name="Suppliers" parent="fleet_management.menu_cars_main"/>
+    <menuitem id="menu_suppliers_sub" action="fleet_management.action_suppliers" parent="fleet_management.menu_fleet_management_sup" name="Supplier's List"/>
+
+        <record id="view_countries_form" model="ir.ui.view">
+        <field name="name">view.countries.form</field>
+        <field name="model">fleet_management.countries</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="con_id"/>
+                        <field name="con_name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_countries_tree" model="ir.ui.view">
+        <field name="name">view.countries.tree</field>
+        <field name="model">fleet_management.countries</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="con_id"/>
+                <field name="con_name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_countries" model="ir.actions.act_window">
+        <field name="name">Countries</field>
+        <field name="res_model">fleet_management.countries</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_fleet_management_con" name="Countries" parent="fleet_management.menu_cars_main"/>
+    <menuitem id="menu_countries_sub" action="fleet_management.action_countries" parent="fleet_management.menu_fleet_management_con" name="Country's List"/>
+
 
 </odoo>
