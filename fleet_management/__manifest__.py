@@ -8,7 +8,8 @@
     'data': [
         'security/cars_security.xml',
         'security/ir.model.access.csv',
-        'views/cars_view.xml'
+        'views/cars_view.xml',
+        'data/fleet_management_sequence.xml'
     ],
     'installable': True,
     'auto_install': False,

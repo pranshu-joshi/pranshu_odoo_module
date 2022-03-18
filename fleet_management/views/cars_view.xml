@@ -10,6 +10,14 @@
                    <field name="state" widget="statusbar" options="{'clickable':'1'}"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    <button name="%(action_cars)d" string='Records' type="action" class="oe_stat_button" icon="fa-table"/>
+                    <button name="%(action_features)d" type="action" class="oe_stat_button"
+                            icon="fa-user"
+                            context="{'search_default_Model':active_id}">
+                            <field name="count_rec1" widget="statinfo"/>
+                    </button>
+                    </div>
                     <widget name="web_ribbon" title="Favourite" bg_color="bg-info" attrs="{'invisible': [('brand', '!=', 'tata')]}"/>
                         <label for="name"/>
                         <h1>
@@ -22,12 +30,13 @@
                             <h1>
                                 <field name="name" placeholder="Car's Name"/>
                             </h1>
+                        <field name="new_rec_count"/>
                         <field name="car_id" required="1"/>
                         <field name="available" attrs="{'invisible': [('brand', '!=', 'tata')]}"/>
                         <field name="dom"/>
                         <field name="comments"/>
                         <field name="template"/>
-                        <field name="brand" required="1"/>
+                        <field name="brand"/>
                         <label for="price" string="     "/>
                         <field name="price" nolabel="1" placeholder="Price of car"/>
                         <field name="onlyfour"/>
@@ -36,7 +45,7 @@
                         <field name="email" widget="email"/>
                         <field name="url" widget="url"/>
                         <field name="priority" widget="priority"/>
-                        <field name="sign_in" widget="float_time"/>
+                        <field name="sign_in"/>
                         <field name="sign_out" widget="float_time"/>
                         <field name="condition" widget="radio"/>
                         <field name="company_id" widget="selection"/>
@@ -49,13 +58,20 @@
                         <field name="total_percent_fet" widget="percentpie"/>
                         <field name="store_fname" invisible="1" />
 
-                        <field name="parent_id"/>
+                        <field name="parent_id" domain="[('id','!=', active_id)]"/>
+                        <field name="awards" attrs="{'readonly' : [('name', '=', False)]}"/>
+                        <field name="view_comments"/>
+                        <field name="current_user"/>
                     </group>
-                    <separator string="Comments"/>
-                    <field name="comments"/>
+                    <separator string="Others"/>
+
                     <notebook>
                         <page name="pg_notes" string="Features">
                             <field name="feature_id"/>
+                            <button name="unlink_all" string="Unlink all" type="object"/>
+                            <button name="link" string="link" type="object"/>
+                            <button name="create_feature" string="Add Feature" type="object"/>
+                            <button name="write_feature" string="Update Feature" type="object"/>
                         </page>
                         <page name="pg_tmpl" string="Suppliers">
                             <field name="supplier_list" widget="many2many_tags"/>
@@ -66,10 +82,17 @@
                         <page name="name" string="Childs">
                             <field name="child_ids"/>
                         </page>
+                        <page name="comments" string="Comments" attrs="{'invisible' : [('view_comments', '=', False)]}">
+                            <field name="comments"/>
+                        </page>
                     </notebook>
                 </sheet>
                 <footer>
-                    <h3>Footer</h3>
+                    <button name="create_supplier" string="Add Supplier" type="object"/>
+                    <button name="cur_user" string="Current User" type="object"/>
+                    <button name="term_button" string="Terminal Recs" type="object"/>
+                    <button name="del_feature" string="Delete Feature" type="object"/>
+                    <button name="button_seq" string="Create Sequence" type="object"/>
                 </footer>
             </form>
         </field>
@@ -86,6 +109,7 @@
                 <field name="dom"/>
                 <field name="comments"/>
                 <field name="company_id"/>
+<!--                <field name="sign_in"/>-->
                 <field name="state" widget="badge" decoration-success="state == 'ready'"
                        decoration-info="state == 'review'" decoration-warning="state == 'in_repair'"
                        decoration-danger="state == 'test'" decoration-primary="state == 'deal'"/>
@@ -93,10 +117,36 @@
         </field>
     </record>
 
+    <record id="view_cars_search" model="ir.ui.view">
+        <field name="name">view.fleet_management.tree</field>
+        <field name="model">automotives.cars</field>
+        <field name="arch" type="xml">
+            <search>
+                <searchpanel>
+                    <field name="company_id"/>
+                </searchpanel>
+                <field name="car_id"/>
+                <field name="name"/>
+                <field name="available"/>
+                <field name="dom"/>
+                <field name="comments"/>
+                <field name="company_id"/>
+                <filter name="fil_comp" string="TATA" domain="[('company_id', '=', 'TATA')]"/>
+                <filter name="fil_comp" string="BMW" domain="[('company_id', '=', 'BMW')]"/>
+                <filter name="fil_comp" string="Mercedes" domain="[('company_id', '=', 'Mercedes')]"/>
+                <filter name="fil_dom" string="Date of Manufacture" date="dom"/>
+                <filter name="grp_by_company" string="Company" context="{'group_by' : 'company_id'}"/>
+                <filter name="grp_by_state" string="State" context="{'group_by' : 'state'}"/>
+                <filter name="grp_by_date" string="Date" context="{'group_by' : 'dom'}"/>
+            </search>
+        </field>
+    </record>
+
     <record id="action_cars" model="ir.actions.act_window">
         <field name="name">Cars</field>
         <field name="res_model">automotives.cars</field>
         <field name="view_mode">tree,form</field>
+<!--        <field name="context">{'group_by' : 'state'}</field>-->
     </record>
 
 
@@ -127,9 +177,20 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name"/>
-                <field name="code"/>
+
                 <field name="company_age"/>
             </tree>
+        </field>
+    </record>
+
+     <record id="view_company_search" model="ir.ui.view">
+        <field name="name">view.fleet_management.search</field>
+        <field name="model">fleet_management.features</field>
+        <field name="arch" type="xml">
+            <search>
+            <field name="ID"/>
+            <field name="feature_name"/>
+            </search>
         </field>
     </record>
 
@@ -168,7 +229,7 @@
         <field name="name">view.features.tree</field>
         <field name="model">fleet_management.features</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree editable="bottom">
                 <field name="ID"/>
                 <field name="feature_name"/>
                 <field name="Model"/>
@@ -182,6 +243,26 @@
         </field>
     </record>
 
+    <record id="view_features_search" model="ir.ui.view">
+        <field name="name">view.features.search</field>
+        <field name="model">fleet_management.features</field>
+        <field name="arch" type="xml">
+            <search>
+            <field name="Model"/>
+            <field name="ID"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_features" model="ir.actions.act_window">
+        <field name="name">Features</field>
+        <field name="res_model">fleet_management.features</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_fleet_management_features" name="Features" parent="fleet_management.menu_cars_main"/>
+    <menuitem id="menu_features" action="fleet_management.action_features" parent="menu_fleet_management_features" name="Feature's List"/>
+
     <record id="view_suppliers_form" model="ir.ui.view">
         <field name="name">view.suppliers.form</field>
         <field name="model">fleet_management.suppliers</field>
@@ -192,6 +273,8 @@
                         <field name="sup_id"/>
                         <field name="sup_name"/>
                         <field name="sup_age"/>
+                        <field name="company_id"/>
+
                     </group>
                 </sheet>
             </form>
@@ -206,6 +289,7 @@
                 <field name="sup_id"/>
                 <field name="sup_name"/>
                 <field name="sup_age"/>
+                <field name="company_id"/>
             </tree>
         </field>
     </record>
@@ -228,6 +312,7 @@
                     <group>
                         <field name="con_id"/>
                         <field name="con_name"/>
+                        <field name="con_code"/>
                     </group>
                 </sheet>
             </form>
@@ -241,6 +326,7 @@
             <tree>
                 <field name="con_id"/>
                 <field name="con_name"/>
+                <field name="con_code"/>
             </tree>
         </field>
     </record>
@@ -249,6 +335,8 @@
         <field name="name">Countries</field>
         <field name="res_model">fleet_management.countries</field>
         <field name="view_mode">tree,form</field>
+<!--        <field name="domain">[('id', '>', 2)]</field>-->
+        <field name="context">{'default_con_id' : 3}</field>
     </record>
 
     <menuitem id="menu_fleet_management_con" name="Countries" parent="fleet_management.menu_cars_main"/>
@@ -256,3 +344,4 @@
 
 
 </odoo>
+
