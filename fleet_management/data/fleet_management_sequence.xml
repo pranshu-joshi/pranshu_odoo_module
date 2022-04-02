@@ -4,7 +4,6 @@
         <record id="car_entry_seq" model="ir.sequence">
             <field name="name">Cars Entry sequence</field>
             <field name="code">automotives.cars</field>
-<!--            <field name="prefix"></field>-->
             <field eval="1" name="number_next"/>
             <field eval="1" name="number_increment"/>
             <field name="padding" eval="4"/>

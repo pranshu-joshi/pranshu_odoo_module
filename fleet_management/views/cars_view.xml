@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 
+    <record id="action_cars" model="ir.actions.act_window">
+        <field name="name">Cars</field>
+        <field name="res_model">automotives.cars</field>
+        <field name="view_mode">kanban,calendar,tree,form,graph,pivot</field>
+<!--        <field name="context">{'group_by' : 'state'}</field>-->
+    </record>
+
+    <record id="action_features" model="ir.actions.act_window">
+        <field name="name">Features</field>
+        <field name="res_model">fleet_management.features</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_feat" model="ir.actions.act_window">
+        <field name="name">Features1</field>
+        <field name="res_model">fleet_management.features</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{'search_default_Model':active_id}</field>
+    </record>
+
     <record id="view_cars_form" model="ir.ui.view">
         <field name="name">view.fleet_management.form</field>
         <field name="model">automotives.cars</field>
         <field name="arch" type="xml">
+<!--            <form create="0" edit="0" delete="0">-->
             <form>
                 <header>
                    <field name="state" widget="statusbar" options="{'clickable':'1'}"/>
@@ -19,38 +40,51 @@
                     </button>
                     </div>
                     <widget name="web_ribbon" title="Favourite" bg_color="bg-info" attrs="{'invisible': [('brand', '!=', 'tata')]}"/>
-                        <label for="name"/>
-                        <h1>
+                    <widget name="web_ribbon" title="Ready" bg_color="bg-success" attrs="{'invisible': [('state', '!=', 'ready')]}"/>
+                    <widget name="web_ribbon" title="Testing" bg_color="bg-warning" attrs="{'invisible': [('state', '!=', 'test')]}"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('available', '=', True)]}"/>
+                    <label for="name"/>
+                        <div class="name_styles">
                             <field name="name" placeholder="Car's Name"/>
-                        </h1>
+                        </div>
                         <field name='car_img' widget="image" class="oe_avatar" nolabel="1"/>
                     <separator string=""/>
                     <group colspan="4" col="4">
-                         <label for="name"/>
-                            <h1>
-                                <field name="name" placeholder="Car's Name"/>
-                            </h1>
-                        <field name="new_rec_count"/>
+<!--                         <label for="name"/>-->
+<!--                            <h1>-->
+<!--                                <field name="name" placeholder="Car's Name"/>-->
+<!--                            </h1>-->
+<!--                        <field name="new_rec_count"/>-->
                         <field name="car_id" required="1"/>
                         <field name="available" attrs="{'invisible': [('brand', '!=', 'tata')]}"/>
                         <field name="dom"/>
                         <field name="comments"/>
-                        <field name="template"/>
-                        <field name="brand"/>
+<!--                        <field name="template"/>-->
+                        <field name="brand" class="cars_styles"/>
                         <label for="price" string="     "/>
                         <field name="price" nolabel="1" placeholder="Price of car"/>
-                        <field name="onlyfour"/>
+<!--                        <field name="onlyfour"/>-->
                         <field name="active" invisible="1"/>
                         <field name="password" password="1"/>
-                        <field name="email" widget="email"/>
-                        <field name="url" widget="url"/>
+<!--                        <field name="email" widget="email"/>-->
+<!--                        <field name="url" widget="url"/>-->
                         <field name="priority" widget="priority"/>
-                        <field name="sign_in"/>
-                        <field name="sign_out" widget="float_time"/>
-                        <field name="condition" widget="radio"/>
-                        <field name="company_id" widget="selection"/>
+<!--                        <field name="sign_in"/>-->
+<!--                        <field name="sign_out" widget="float_time"/>-->
+                        <field name="condition" widget="radio"
+                        />
+                        <field name="company_id">
+                            <form>
+                                <group>
+                                    <field name="name" required="1"/>
+<!--                                        <field name="code"/>-->
+<!--                                        <field name="child_ids"/>-->
+<!--                                        <field name="company_age"/>-->
+                                </group>
+                            </form>
+                        </field>
                         <field name="com_value"/>
-                        <field name="currency_id"/>
+<!--                        <field name="currency_id"/>-->
                         <field name="extra_info"/>
                         <field name="params_store" filename="store_fname" />
                         <field name="total_over_fet"/>
@@ -59,15 +93,37 @@
                         <field name="store_fname" invisible="1" />
 
                         <field name="parent_id" domain="[('id','!=', active_id)]"/>
-                        <field name="awards" attrs="{'readonly' : [('name', '=', False)]}"/>
+<!--                        <field name="awards" attrs="{'readonly' : [('name', '=', False)]}"/>-->
                         <field name="view_comments"/>
-                        <field name="current_user"/>
+<!--                        <field name="current_user"/>-->
+                        <field name="deal_on"/>
+                        <field name="deal_off"/>
+                        <field name="color" widget="color_picker"/>
                     </group>
                     <separator string="Others"/>
 
                     <notebook>
                         <page name="pg_notes" string="Features">
-                            <field name="feature_id"/>
+                            <field name="feature_id">
+                                <tree>
+                                    <field name="ID"/>
+                                    <field name="feature_name"/>
+                                    <field name="fet_v"/>
+                                    <field name="fet_p"/>
+                                    <field name="sub_fet_v"/>
+                                    <field name="over_fet"/>
+                                </tree>
+                                <form>
+                                    <group col="4" colspan="4">
+                                        <field name="ID"/>
+                                        <field name="feature_name"/>
+                                        <field name="fet_v"/>
+                                        <field name="fet_p"/>
+                                        <field name="sub_fet_v"/>
+                                        <field name="over_fet"/>
+                                    </group>
+                                </form>
+                            </field>
                             <button name="unlink_all" string="Unlink all" type="object"/>
                             <button name="link" string="link" type="object"/>
                             <button name="create_feature" string="Add Feature" type="object"/>
@@ -79,13 +135,23 @@
                         <page name="pg_tmpl" string="Countries">
                             <field name="country_list" widget="many2many_checkboxes"/>
                         </page>
-                        <page name="name" string="Childs">
+                        <page name="childs" string="Childs">
                             <field name="child_ids"/>
                         </page>
                         <page name="comments" string="Comments" attrs="{'invisible' : [('view_comments', '=', False)]}">
                             <field name="comments"/>
                         </page>
+                        <page name="">
+
+                        </page>
                     </notebook>
+                </sheet>
+                <sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+<!--                        <field name="activity_ids"/>-->
+                        <field name="message_ids"/>
+                    </div>
                 </sheet>
                 <footer>
                     <button name="create_supplier" string="Add Supplier" type="object"/>
@@ -97,22 +163,62 @@
             </form>
         </field>
     </record>
+
+    <record id="view_mercedes_cars_form1" model="ir.ui.view">
+        <field name="name">view.mercedes.cars.form</field>
+        <field name="model">automotives.cars</field>
+        <field name="arch" type="xml">
+            <form>
+                <group colspan="4" col="4">
+                    <field name="car_id"/>
+                    <field name="name"/>
+                    <field name="brand"/>
+                    <field name="dom"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+
     <record id="view_cars_tree" model="ir.ui.view">
         <field name="name">view.fleet_management.tree</field>
         <field name="model">automotives.cars</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree default_order="dom"
+                  decoration-warning="state=='review'"
+                  decoration-info="state=='in_repair'"
+                  decoration-primary="state=='test'"
+                  decoration-muted="state=='deal'"
+                  decoration-success="state=='ready'">
+<!--                  decoration-bf="state=='review'">-->
+                <field name="available" widget="boolean_toggle"/>
                 <field name="car_seq" widget="handle"/>
                 <field name="car_id"/>
-                <field name="name"/>
-                <field name="available"/>
-                <field name="dom"/>
-                <field name="comments"/>
-                <field name="company_id"/>
+                <field name="name" optional="hide"/>
+<!--                <field name="available"/>-->
+                <field name="dom" optional="show"/>
+                <field name="comments" optional="hide"/>
+                <field name="company_id" optional="show"/>
+                <field name="price" sum="Total Price"/>
+                <field name="company_id" widget="list_activity"/>
+<!--                <field name="price" avg="Total Price"/>-->
 <!--                <field name="sign_in"/>-->
                 <field name="state" widget="badge" decoration-success="state == 'ready'"
                        decoration-info="state == 'review'" decoration-warning="state == 'in_repair'"
                        decoration-danger="state == 'test'" decoration-primary="state == 'deal'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_mercedes_cars_tree" model="ir.ui.view">
+        <field name="name">view.mercedes.cars.tree</field>
+        <field name="model">automotives.cars</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="car_id"/>
+                <field name="name"/>
+                <field name="brand"/>
+                <field name="dom"/>
             </tree>
         </field>
     </record>
@@ -142,17 +248,220 @@
         </field>
     </record>
 
-    <record id="action_cars" model="ir.actions.act_window">
-        <field name="name">Cars</field>
-        <field name="res_model">automotives.cars</field>
-        <field name="view_mode">tree,form</field>
-<!--        <field name="context">{'group_by' : 'state'}</field>-->
+    <!-- Calendar view of Student -->
+    <record id="view_cars_calendar" model="ir.ui.view">
+        <field name="name">view.cars.calendar</field>
+        <field name="model">automotives.cars</field>
+        <field name="arch" type="xml">
+<!--            <calendar date_start="dom">-->
+<!--            <calendar date_start="deal_on" date_stop="deal_off" mode="month">-->
+            <calendar date_start="deal_on" date_stop="deal_off" mode="day" event_limit="3">
+                <field name="car_id"/>
+                <field name="name"/>
+                <field name="company_id"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_mercedes_cars_calendar" model="ir.ui.view">
+        <field name="name">view.mercedes.cars.calendar</field>
+        <field name="model">automotives.cars</field>
+        <field name="arch" type="xml">
+<!--            <calendar date_start="dom">-->
+<!--            <calendar date_start="deal_on" date_stop="deal_off" mode="month">-->
+            <calendar date_start="deal_on" date_stop="deal_off" mode="month">
+                <field name="car_id"/>
+                <field name="name"/>
+<!--                <field name="company_id"/>-->
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Bar chart of cars -->
+<!--    <record id="view_cars_graph" model="ir.ui.view">-->
+<!--        <field name="name">view.cars.graph</field>-->
+<!--        <field name="model">automotives.cars</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <graph stacked="0">-->
+<!--                <field name="price" type="row"/>-->
+<!--                <field name="company_id" type="col"/>-->
+<!--                <field name="condition" type="col"/>-->
+<!--                <field name="total_over_fet" type="measure"/>-->
+<!--            </graph>-->
+<!--        </field>-->
+<!--    </record>-->
+
+    <!-- Line chart of cars -->
+<!--    <record id="view_cars_graph" model="ir.ui.view">-->
+<!--        <field name="name">view.cars.graph</field>-->
+<!--        <field name="model">automotives.cars</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <graph type="line">-->
+<!--                <field name="total_over_fet" type="row"/>-->
+<!--                <field name="company_id" type="col"/>-->
+<!--                <field name="price" type="measure"/>-->
+<!--            </graph>-->
+<!--        </field>-->
+<!--    </record>-->
+
+    <!-- Pie chart of cars -->
+    <record id="view_cars_graph" model="ir.ui.view">
+        <field name="name">view.cars.graph</field>
+        <field name="model">automotives.cars</field>
+        <field name="arch" type="xml">
+            <graph type="pie">
+                <field name="total_over_fet" type="row"/>
+                <field name="company_id" type="col"/>
+                <field name="price" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_mercedes_cars_graph" model="ir.ui.view">
+        <field name="name">view.mercedes.cars.graph</field>
+        <field name="model">automotives.cars</field>
+        <field name="arch" type="xml">
+            <graph type="line">
+                <field name="total_over_fet" type="row"/>
+                <field name="company_id" type="col"/>
+                <field name="price" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Pivot view of cars -->
+     <record id="view_cars_pivot" model="ir.ui.view">
+        <field name="name">view.cars.pivot</field>
+        <field name="model">automotives.cars</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="company_id" type="row"/>
+                <!-- day, week, month, quarter and year can be used in interval-->
+                <field name="dom" type="row" interval="quarter"/>
+                <field name="dom" type="row" interval="month"/>
+                <field name="brand" type="col"/>
+                <field name="price" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+     <!-- Kanban view of Student -->
+    <record id="view_cars_kanban" model="ir.ui.view">
+        <field name="name">view.cars.kanban</field>
+        <field name="model">automotives.cars</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="color"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''}
+                                            oe_kanban_card oe_kanban_global_click">
+                            <div class="name_styles">
+                                    <field name="name"/>
+                            </div>
+                            <div class="float-container">
+                                <div class="cars_styles float-child">
+                                    <field name="company_id"/>
+                                    <br/>
+                                    <field name="price"/>
+                                    <div>
+                                        <h3 style="color:#730b1d">
+                                            <field name="comments"/>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="name_styles float-child">
+                                    <!-- Adding an image -->
+                                    <field name="car_img" widget="image" class="img"/>
+                                </div>
+                            </div>
+                             <div class="o_dropdown_kanban o_dropdown">
+                                <!-- Getting an icon of elipsis (three dots) to have the dropdown menu -->
+                                <a class="dropdown-toggle o-no-caret btn" role="button"
+                                   data-toggle="dropdown" data-display="static" href="#"
+                                   aria-label="Dropdown menu" title="Dropdown menu">
+
+                                    <span class="fa fa-ellipsis-v"/>
+                                </a>
+<!--                            Here is the dropdown list and the features contained by the dropdown-->
+                                <div class="dropdown-menu" role="menu">
+                                    <!-- This is for opening the record -->
+                                    <a role="menuitem" type="open" class="dropdown-item">Open</a>
+                                    <!-- This is for opening the record in the edit mode -->
+                                    <t t-if="widget.editable"><a role="menuitem" type="edit" class="dropdown-item">Edit</a></t>
+                                    <!-- This is for deleting the record -->
+                                    <t t-if="widget.deletable"><a role="menuitem" type="delete" class="dropdown-item">Delete</a></t>
+                                    <!-- Using Anchor tag as button of action type to call an action -->
+                                    <a role="menuitem" type="action" name="%(action_feat)d" class="dropdown-item">Features</a>
+                                    <!-- Using Anchor tag as button of object type to call a method -->
+                                    <a role="menuitem" type="object" name="write_feature" class="dropdown-item">Update</a>
+                                    <!-- Adding a seperator -->
+                                    <div role="separator" class="dropdown-divider"/>
+                                    <!-- Color Picker on the Kanban view -->
+                                    <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                </div>
+                             </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
     </record>
 
 
+
+    <record id="action_mercedes_cars" model="ir.actions.act_window">
+        <field name="name">Mercedes Cars</field>
+        <field name="res_model">automotives.cars</field>
+        <field name="view_mode">tree,form,calendar,graph</field>
+        <field name="domain">[('brand', '=', 'mercedes')]</field>
+        <field name="context">{'default_brand':'mercedes'}</field>
+        <field name="search_view_id" ref="view_cars_search"/>
+        <field name="context">{'form_view_ref':'fleet_management.view_mercedes_cars_form1','default_brand':'mercedes'}</field>
+        <field name="context">{'form_view_ref':'fleet_management.view_mercedes_cars_tree','default_brand':'mercedes'}</field>
+        <field name="context">{'form_view_ref':'fleet_management.view_mercedes_cars_calendar','default_brand':'mercedes'}</field>
+        <field name="context">{'form_view_ref':'fleet_management.view_mercedes_cars_graph','default_brand':'mercedes'}</field>
+    </record>
+
+<!--    <record id="action_bmw_cars" model="ir.actions.act_window">-->
+<!--        <field name="name">Bmw Cars</field>-->
+<!--        <field name="res_model">automotives.cars</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--        <field name="domain">[('brand', '=', 'bmw')]</field>-->
+<!--        <field name="context">{'default_brand':'bmw'}</field>-->
+<!--    </record>-->
+
+<!--    Here are the links which are used to bind the views with corresponding action-->
+    <record id="mercedes_cars_view1" model="ir.actions.act_window.view">
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="fleet_management.view_mercedes_cars_tree"/>
+        <field name="act_window_id" ref="action_mercedes_cars"/>
+    </record>
+
+    <record id="mercedes_cars_view" model="ir.actions.act_window.view">
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="fleet_management.view_mercedes_cars_form1"/>
+        <field name="act_window_id" ref="action_mercedes_cars"/>
+    </record>
+
+    <record id="mercedes_cars_view3" model="ir.actions.act_window.view">
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="fleet_management.view_mercedes_cars_calendar"/>
+        <field name="act_window_id" ref="action_mercedes_cars"/>
+    </record>
+
+    <record id="mercedes_cars_view4" model="ir.actions.act_window.view">
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="fleet_management.view_mercedes_cars_graph"/>
+        <field name="act_window_id" ref="action_mercedes_cars"/>
+    </record>
+
     <menuitem id="menu_cars_main" name="Fleet Management"/>
 
-    <menuitem id="menu_cars_sub" name="Cars" parent="fleet_management.menu_cars_main" action="fleet_management.action_cars"/>
+    <menuitem id="menu_cars_sub" name="Cars" parent="fleet_management.menu_cars_main"/>
+    <menuitem id="menu_cars_all" name="All" parent="fleet_management.menu_cars_sub" action="fleet_management.action_cars"/>
+    <menuitem id="menu_mercedes_cars" name="Mercedes" parent="fleet_management.menu_cars_sub" action="fleet_management.action_mercedes_cars"/>
+<!--    <menuitem id="menu_bmw_cars" name="BMW" parent="fleet_management.menu_cars_sub" action="fleet_management.action_bmw_cars"/>-->
 
     <record id="view_company_form" model="ir.ui.view">
         <field name="name">view.company.form</field>
@@ -177,7 +486,6 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name"/>
-
                 <field name="company_age"/>
             </tree>
         </field>
@@ -197,7 +505,7 @@
     <record id="action_company" model="ir.actions.act_window">
         <field name="name">Company</field>
         <field name="res_model">fleet_management.company</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,search</field>
     </record>
 
     <menuitem id="menu_fleet_management_config" name="Company" parent="fleet_management.menu_cars_main"/>
@@ -229,7 +537,7 @@
         <field name="name">view.features.tree</field>
         <field name="model">fleet_management.features</field>
         <field name="arch" type="xml">
-            <tree editable="bottom">
+            <tree editable="bottom" multi_edit="1">
                 <field name="ID"/>
                 <field name="feature_name"/>
                 <field name="Model"/>
@@ -254,11 +562,18 @@
         </field>
     </record>
 
-    <record id="action_features" model="ir.actions.act_window">
-        <field name="name">Features</field>
-        <field name="res_model">fleet_management.features</field>
-        <field name="view_mode">tree,form</field>
-    </record>
+
+
+<!--    <record id="action_features1" model="ir.actions.act_window">-->
+<!--        <field name="name">Features</field>-->
+<!--        <field name="res_model">fleet_management.features</field>-->
+<!--        <field name="view_mode">tree</field>-->
+<!--        <field name="context">{'search_default_Model':active_id}</field>-->
+<!--    </record>-->
+
+
+
+
 
     <menuitem id="menu_fleet_management_features" name="Features" parent="fleet_management.menu_cars_main"/>
     <menuitem id="menu_features" action="fleet_management.action_features" parent="menu_fleet_management_features" name="Feature's List"/>
@@ -307,7 +622,7 @@
         <field name="name">view.countries.form</field>
         <field name="model">fleet_management.countries</field>
         <field name="arch" type="xml">
-            <form>
+            <form create="1" edit="1" delete="0">
                 <sheet>
                     <group>
                         <field name="con_id"/>
@@ -340,7 +655,11 @@
     </record>
 
     <menuitem id="menu_fleet_management_con" name="Countries" parent="fleet_management.menu_cars_main"/>
-    <menuitem id="menu_countries_sub" action="fleet_management.action_countries" parent="fleet_management.menu_fleet_management_con" name="Country's List"/>
+    <menuitem id="menu_countries_sub"
+              action="fleet_management.action_countries"
+              parent="fleet_management.menu_fleet_management_con"
+              name="Country's List"
+              groups="grp_fleet_management_ofcr,grp_fleet_management_mngr"/>
 
 
 </odoo>

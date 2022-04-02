@@ -13,6 +13,7 @@ class Automotives(models.Model):
     # These are the Attributes of the model
     _name = 'automotives.cars'
     _description = 'Cars'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _table = 'automotives_cars'
     _order = 'car_id'
     # These attributes are used for the hierarchy of the model (only used when parent and child ids will be given)
@@ -64,7 +65,7 @@ class Automotives(models.Model):
     # Relational Fields
     company_id = fields.Many2one(comodel_name='fleet_management.company',
                                  string='Company',
-                                 ondelete="restrict")
+                                 ondelete="restrict", tracking=True)
     # domain=[('name', 'ilike', 'a')])
 
     # This is One2many field & it will be requiring its inverse's name (which will be Many2many field in its own model)
@@ -74,7 +75,7 @@ class Automotives(models.Model):
                                  'Model', limit=10)
 
     supplier_list = fields.Many2many(comodel_name='fleet_management.suppliers',
-                                     string='Suppliers', )
+                                     string='Suppliers')
     # domain=[('sup_name', 'ilike', '%year')])
 
     # Many2many : In this field the arguments will be as (comodel_name, relation_name, colunmn1, colunmn2, string)
@@ -125,6 +126,11 @@ class Automotives(models.Model):
     count_rec1 = fields.Integer(string='', compute='count_rec')
 
     new_rec_count = fields.Integer('Features')
+
+    deal_on = fields.Datetime("Deal ON")
+    deal_off = fields.Datetime("Deal OFF")
+
+    color = fields.Integer('Color')
 
     def term_button(self):
         """
@@ -284,8 +290,8 @@ class Automotives(models.Model):
         rec = self.env['fleet_management.suppliers']
         br_rec = rec.browse(3)
         dict = {
-            'sup_id': 3,
-            'sup_name': 'Ralco'
+            'sup_id': 10,
+            'sup_name': 'XYZ'
         }
         updt = br_rec.write(dict)
 
@@ -445,19 +451,19 @@ class Automotives(models.Model):
 
     # Exe-4 ---> Q13
 
-    @api.model
-    def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
-        # print(":::::::::::::::::CALLED")
-        res = super(Automotives, self).fields_view_get(view_id, view_type, toolbar=toolbar, submenu=False)
-        print("VIEW TYPE ----->", view_type)
-        print(res)
-        if view_type == 'form':
-            print(">>>>>>>>sortable>>>>>>>>", res.get('fields').get('state').get('sortable'))
-            k = res.get('fields').get('state').update({'sortable': False})
-        elif view_type == 'tree':
-            print(">>>>>>>>sortable>>>>>>>>", res.get('fields').get('state').get('sortable'))
-            k = res.get('fields').get('state').update({'sortable': False})
-        return res
+    # @api.model
+    # def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
+    #     # print(":::::::::::::::::CALLED")
+    #     res = super(Automotives, self).fields_view_get(view_id, view_type, toolbar=toolbar, submenu=False)
+    #     print("VIEW TYPE ----->", view_type)
+    #     print(res)
+    #     if view_type == 'form':
+    #         print(">>>>>>>>sortable>>>>>>>>", res.get('fields').get('state').get('sortable'))
+    #         k = res.get('fields').get('state').update({'sortable': False})
+    #     elif view_type == 'tree':
+    #         print(">>>>>>>>sortable>>>>>>>>", res.get('fields').get('state').get('sortable'))
+    #         k = res.get('fields').get('state').update({'sortable': False})
+    #     return res
 
     # Exe-4 ---> Q14
 

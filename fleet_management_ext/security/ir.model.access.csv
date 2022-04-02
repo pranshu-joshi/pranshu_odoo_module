@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_showroom_mngr,access.showroom.mngr,model_fleet_management_showroom,fleet_management.grp_fleet_management_mngr,1,1,1,1
+access_showroom_ofcr,access.showroom.ofcr,model_fleet_management_showroom,fleet_management.grp_fleet_management_ofcr,1,1,1,1
+access_cars_ofcr,access.cars.ofcr,model_automotives_cars,fleet_management.grp_fleet_management_ofcr,1,1,1,1
+access_company_ofcr,access.company.ofcr,fleet_management.model_fleet_management_company,fleet_management.grp_fleet_management_ofcr,1,1,0,0
+access_inheriting_mngr,access.inheriting.mngr,model_multiple_inheritance,fleet_management.grp_fleet_management_mngr,1,1,1,1
+access_extra_compnay_mngr,access.extra.compnay.mngr,model_extra_company,fleet_management.grp_fleet_management_mngr,1,1,1,1
+access_extra_supplier_mngr,access.extra.supplier.mngr,model_extra_supplier,fleet_management.grp_fleet_management_mngr,1,1,1,1

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_multiple_inheritance_form" model="ir.ui.view">
+        <field name="name">view.multiple.inheritance.form</field>
+        <field name="model">multiple.inheritance</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group colspan="4" col="4">
+                        <field name="sup_id"/>
+                        <field name="sup_name"/>
+                        <field name="sup_age"/>
+                        <field name="con_id"/>
+                        <field name="con_name"/>
+                        <field name="con_code"/>
+                        <field name="demo"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_multiple_inheritance_tree" model="ir.ui.view">
+        <field name="name">view.multiple.inheritance.tree</field>
+        <field name="model">multiple.inheritance</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sup_id"/>
+                <field name="sup_name"/>
+                <field name="sup_age"/>
+                <field name="con_id"/>
+                <field name="con_name"/>
+                <field name="con_code"/>
+                <field name="demo"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_multiple_inheritance" model="ir.actions.act_window">
+        <field name="name">Multiple Inheritance</field>
+        <field name="res_model">multiple.inheritance</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="multiple_inherit_menu" name="Demo" parent="fleet_management.menu_cars_sub"
+              action="action_multiple_inheritance"/>
+</odoo>

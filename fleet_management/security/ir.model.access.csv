@@ -2,7 +2,7 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_cars_mngr,access.cars.mngr,model_automotives_cars,grp_fleet_management_mngr,1,1,1,1
 access_cars_ofcr,access.cars.ofcr,model_automotives_cars,grp_fleet_management_ofcr,1,1,1,0
 access_company_mngr,access.company.mngr,model_fleet_management_company,grp_fleet_management_mngr,1,1,1,1
-access_company_ofcr,access.company.ofcr,model_fleet_management_company,grp_fleet_management_ofcr,1,1,1,0
+access_company_ofcr,access.company.ofcr,model_fleet_management_company,grp_fleet_management_ofcr,1,1,1,1
 access_features_mngr,access.features.mngr,model_fleet_management_features,grp_fleet_management_mngr,1,1,1,1
 access_features_ofcr,access.features.ofcr,model_fleet_management_features,grp_fleet_management_ofcr,1,1,1,0
 access_suppliers_mngr,access.suppliers.mngr,model_fleet_management_suppliers,grp_fleet_management_mngr,1,1,1,1
