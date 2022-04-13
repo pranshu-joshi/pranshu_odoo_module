@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="view_car_analysis_tree" model="ir.ui.view">
+        <field name="name">view.car.analysis.tree</field>
+        <field name="model">car.analysis</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="car_name"/>
+                <field name="company_id"/>
+                <field name="fet_v"/>
+                <field name="fet_p"/>
+                <field name="sub_fet_v"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Pivot view of car analysis -->
+    <record id="view_car_analysis_pivot" model="ir.ui.view">
+        <field name="name">view.car.analysis.pivot</field>
+        <field name="model">car.analysis</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="car_name" type="row"/>
+                <field name="company_id" type="column"/>
+                <field name="fet_v" type="measure"/>
+                <field name="fet_p" type="measure"/>
+                <field name="sub_fet_v" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Action of car Analysis -->
+    <record id="action_car_analysis" model="ir.actions.act_window">
+        <field name="name">Car Analysis</field>
+        <field name="res_model">car.analysis</field>
+        <field name="view_mode">tree,pivot</field>
+    </record>
+
+    <!-- Menu for reporting -->
+    <menuitem id="menu_car_report" name="Reporting" parent="menu_cars_main" sequence="100"/>
+
+    <!-- Menu for Car Analysis -->
+    <menuitem id="menu_car_analysis" action="action_car_analysis" parent="menu_car_report"/>
+
+</odoo>

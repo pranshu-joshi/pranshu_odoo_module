@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_showroom_mngr,access.showroom.mngr,model_fleet_management_showroom,fleet_management.grp_fleet_management_mngr,1,1,1,0

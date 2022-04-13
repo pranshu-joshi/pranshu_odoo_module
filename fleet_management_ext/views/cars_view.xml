@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!--Inherited form view of cars to add up the new fields -->
+    <record id="view_cars_form_inherit_fields" model="ir.ui.view">
+        <field name="name">view.cars.form.inherit.fields</field>
+        <field name="model">automotives.cars</field>
+        <field name="inherit_id" ref="fleet_management.view_cars_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='car_id']" position="after">
+                <field name="car_type"/>
+                <field name="service"/>
+            </xpath>
+            <xpath expr="//field[@name='color']" position="before">
+                <field name="kms"/>
+            </xpath>
+            <xpath expr="//field[@name='password']" position="replace">
+                <field name="kms"/>
+            </xpath>
+            <xpath expr="/form/sheet/notebook/page[@name='comments']" position="before">
+                <page name="pg_shrm" string="Showroom">
+                    <group>
+                        <field name="showroom"/>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="/form/sheet/notebook/page[@name='comments']" position="replace">
+                <page name="pg_nts" string="Notes">
+                    <group>
+                        <field name="notes"/>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='brand']" position="attributes">
+                <attribute name="attrs">{'required':[('car_id','!=',0)]}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='available']" position="attributes">
+                <attribute name="attrs">{'invisible': [('brand', '!=', 'bmw')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="replace">
+                <field name="state" widget="statusbar"
+                       statusbar_visible="review,in_repair,test,deal,ready,sold"
+                       options="{'clickable':'1'}"/>
+            </xpath>
+
+            <xpath expr="//field[@name='color']" position="attributes">
+                <attribute name="groups">fleet_management.grp_fleet_management_ofcr</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='term_button']" position="attributes">
+                <attribute name="groups">fleet_management.grp_fleet_management_ofcr</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='childs']" position="attributes">
+                <attribute name="groups">fleet_management.grp_fleet_management_ofcr</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!--    Action of the cars extended model-->
+    <record id="fleet_management.action_cars" model="ir.actions.act_window">
+        <field name="view_mode">kanban,calendar,tree,form,graph,pivot</field>
+    </record>
+
+    <record id="view_showroom_form" model="ir.ui.view">
+        <field name="name">view.showroom.form</field>
+        <field name="model">fleet_management.showroom</field>
+        <!--        <field name="inherit_id" ref="fleet_management.view_cars_form"/>-->
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="showroom_id"/>
+                    <field name="name"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cars_activity" model="ir.ui.view">
+        <field name="name">view.cars.activity</field>
+        <field name="model">automotives.cars</field>
+        <field name="arch" type="xml">
+            <activity string="Activities">
+                <templates>
+                    <div t-name="activity-box">
+                        <field name="name"/>
+                    </div>
+                </templates>
+            </activity>
+        </field>
+    </record>
+
+<!--    Here we are overriding the existing action for adding a view (activity view)-->
+    <record id="fleet_management.action_cars" model="ir.actions.act_window">
+        <field name="name">Cars</field>
+        <field name="res_model">automotives.cars</field>
+        <field name="view_mode">kanban,calendar,tree,form,graph,pivot,activity</field>
+    </record>
+
+<!--    Here we are overriding the existing action and changing the context as well as domain-->
+    <record id="fleet_management.action_countries" model="ir.actions.act_window">
+        <field name="name">Countries</field>
+        <field name="res_model">fleet_management.countries</field>
+        <field name="view_mode">tree,form</field>
+<!--        <field name="domain">[('id', '>', 3)]</field>-->
+        <field name="context">{'default_con_id' : 23}</field>
+    </record>
+
+        <menuitem id="fleet_management.menu_mercedes_cars"
+                  name="Mercedes"
+                  parent="fleet_management.menu_cars_sub"
+                  action="fleet_management.action_mercedes_cars"
+                  groups="fleet_management.grp_fleet_management_mngr"/>
+
+        <menuitem id="menu_countries_sub"
+                  action="fleet_management.action_countries"
+                  parent="fleet_management.menu_fleet_management_con"
+                  name="Country's List"
+                  groups="fleet_management.grp_fleet_management_mngr"/>
+
+
+
+
+</odoo>

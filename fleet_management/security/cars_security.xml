@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 
-    <record model="ir.module.category" id="module_fleet_management">
-        <field name="description">Helps you handle your car sales.</field>
-        <field name="name">Cars</field>
-        <field name="sequence">12</field>
-    </record>
+<!--    <record model="ir.module.category" id="module_fleet_management">-->
+<!--        <field name="description">Helps you handle your car sales.</field>-->
+<!--        <field name="name">Cars</field>-->
+<!--        <field name="sequence">12</field>-->
+<!--    </record>-->
 
     <record id="grp_fleet_management_mngr" model="res.groups">
         <field name="name">Manager</field>

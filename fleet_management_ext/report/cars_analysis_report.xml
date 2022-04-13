@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="view_car_analysis_tree" model="ir.ui.view">
+        <field name="name">view.car.analysis.tree</field>
+        <field name="model">car.analysis</field>
+        <field name="inherit_id" ref="fleet_management.view_car_analysis_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='car_name']" position="after">
+                <field name="condition"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Pivot view of car analysis -->
+    <record id="view_car_analysis_pivot" model="ir.ui.view">
+        <field name="name">view.car.analysis.pivot</field>
+        <field name="model">car.analysis</field>
+        <field name="inherit_id" ref="fleet_management.view_car_analysis_pivot"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='sub_fet_v']" position="after">
+                <field name="condition" type="row"/>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

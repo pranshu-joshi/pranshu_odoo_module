@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="view_update_features_new_form_inherit" model="ir.ui.view">
+        <field name="name">view.update.features.new.form.inherit</field>
+        <field name="model">automotives.cars</field>
+        <field name="inherit_id" ref="fleet_management.view_cars_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='%(action_cars)d']" position="after">
+                <button name="%(action_update_features_new)d"
+                        type="action"
+                        string="Update Features New"
+                        icon="fa-edit"
+                        class="smart-buttons"
+                        style="border-radius:10px; border:1px solid"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_update_features_new_wiz" model="ir.ui.view">
+        <field name="name">view.update.features.new.wiz</field>
+        <field name="model">update.features.new</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="fea_id"/>
+                    <field name="con_ids"/>
+                </group>
+                <footer>
+                    <button name="update_features_new" type="object" class="btn-primary" string="Update Fan Alt"/>
+                    <button special="cancel" string="Close" class="btn-danger"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_update_features_new" model="ir.actions.act_window">
+        <field name="name">Update Fans Alt</field>
+        <field name="res_model">update.features.new</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'form_view_ref':'fleet_management.view_update_features_new_wiz'}</field>
+    </record>
+</odoo>

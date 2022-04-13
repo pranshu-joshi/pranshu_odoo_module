@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <record id="view_update_price_wiz_form" model="ir.ui.view">
+        <field name="name">view.update.price.wiz.form</field>
+        <field name="model">update.price.wiz</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="carid"/>
+                    <field name="price"/>
+                </group>
+                <footer>
+                    <button name="update_price"
+                            string="Update Price"
+                            type="object"
+                            class="btn-primary"/>
+                    <button special="cancel"
+                            string="Close"
+                            class="btn-danger"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_update_price_wiz" model="ir.actions.act_window">
+        <field name="name">Update Price</field>
+        <field name="res_model">update.price.wiz</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_update_price_wiz" action="fleet_management.action_update_price_wiz"
+              parent="fleet_management.menu_cars_sub" name="Update Price"/>
+
+
+    <record id="view_update_price_wiz_form2" model="ir.ui.view">
+        <field name="name">view.update.price.wiz.form</field>
+        <field name="model">update.price.wiz</field>
+        <field name="arch" type="xml">
+            <form>
+                <group colspan="4" col="4">
+                    <field name="price"/>
+                </group>
+                <footer>
+                    <button name="update_price"
+                            string="Update"
+                            type="object"
+                            class="btn-grad3"/>
+                    <button special="cancel"
+                            string="Close"
+                            class="btn-grad1"/>
+                    <button name="%(action_update_feature_wiz)d"
+                            type="action"
+                            string="Redirect"
+                            class="btn-grad"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_update_price_wiz" model="ir.actions.act_window">
+        <field name="name">Update Price</field>
+        <field name="res_model">update.price.wiz</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_update_price_wiz2" model="ir.actions.act_window">
+        <field name="name">Update Price</field>
+        <field name="res_model">update.price.wiz</field>
+        <field name="binding_model_id" ref="fleet_management.model_automotives_cars"/>
+        <field name="binding_view_types"/>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'form_view_ref':'fleet_management.view_update_price_wiz_form2'}</field>
+    </record>
+
+    <record id="view_update_feature_wiz_form" model="ir.ui.view">
+        <field name="name">view.update.feature.wiz.form</field>
+        <field name="model">update.features.wiz</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="ID"/>
+                    <field name="Model"/>
+                    <field name="feature_name"/>
+                    <field name="fet_v"/>
+                    <field name="fet_p"/>
+                    <field name="sub_fet_v"/>
+                </group>
+                <footer>
+                    <button name="update_features"
+                            string="Update Feature"
+                            type="object"
+                            class="btn-primary"/>
+                    <button special="cancel"
+                            string="Close"
+                            class="btn-danger"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_update_feature_wiz" model="ir.actions.act_window">
+        <field name="name">Update Feature</field>
+        <field name="res_model">update.features.wiz</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>
+
