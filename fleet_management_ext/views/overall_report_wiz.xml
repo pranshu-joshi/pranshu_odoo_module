@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_overall_report_wiz_form" model="ir.ui.view">
+        <field name="name">view.overall.report.wiz.form</field>
+        <field name="model">report.overall.wizard</field>
+        <field name="inherit_id" ref="fleet_management.view_overall_report_wiz_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='dom']" position="after">
+                <field name="condition"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

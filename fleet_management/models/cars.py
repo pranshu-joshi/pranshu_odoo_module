@@ -19,6 +19,7 @@ class Automotives(models.Model):
     # These attributes are used for the hierarchy of the model (only used when parent and child ids will be given)
     _parent_name = 'parent_id'
     _parent_store = True
+    # SQL constraints which are added to the table (here automotives_cars)
     _sql_constraints = [
         ('unique_car_id', 'unique(car_id)', 'The car id should be unique for every car'),
         ('unique_car', 'unique(name, brand)', 'The car name should be unique for every brand'),
@@ -131,6 +132,8 @@ class Automotives(models.Model):
     deal_off = fields.Datetime("Deal OFF")
 
     color = fields.Integer('Color')
+
+    barcode = fields.Char('Barcode')
 
     def term_button(self):
         """
@@ -559,6 +562,18 @@ class Automotives(models.Model):
         }
         return res
 
+    # Exe - 7 Q - 7
+    def update_features_new(self):
+        """
+        This method is used to Update features by directly calling the action
+        --------------------------------------------------------------------------
+        :param self: object pointer
+        """
+        act = self.env.ref('fleet_management.action_update_feature_wiz').read()[0]
+        return act
+
+
+
 
 class Company(models.Model):
     _name = 'fleet_management.company'
@@ -615,6 +630,7 @@ class Features(models.Model):
     over_fet = fields.Float(string="Overall Feature", compute="_overfet")
     avg_fet = fields.Float(string="Average Feature", compute="_avgfet")
     per_fet = fields.Integer(string="Percentage", compute="_percent")
+    company_id = fields.Many2one('fleet_management.company', 'Company')
 
     @api.onchange('fet_v', 'fet_p', 'sub_fet_v')
     def _overfet(self):
@@ -666,6 +682,16 @@ class Suppliers(models.Model):
         }
         res = super().copy(default=default)
         return res
+
+    # Exe - 7 Q - 8
+    def open_tree(self):
+        """
+        This method is used to Open Tree view of records by directly calling the action
+        -------------------------------------------------------------------------------
+        :param self: object pointer
+        """
+        act = self.env.ref('fleet_management.action_suppliers').read()[0]
+        return act
 
 
 class Country(models.Model):

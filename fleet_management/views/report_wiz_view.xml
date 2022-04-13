@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_report_wiz_form" model="ir.ui.view">
+        <field name="name">view.report.wiz.form</field>
+        <field name="model">report.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="company_id"/>
+                </group>
+                <footer>
+                    <button name="html_report"
+                            type="object"
+                            class="btn-primary"
+                            string="HTML Report"/>
+                    <button name="pdf_report"
+                            type="object"
+                            class="btn-info"
+                            string="PDF Report"/>
+                    <button special="cancel"
+                            class="btn-danger"
+                            string="Close"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_report_wiz" model="ir.actions.act_window">
+        <field name="name">Open Report</field>
+        <field name="res_model">report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_car_report1" name="Reporting" parent="menu_cars_sub" sequence="100"/>
+
+    <!-- Menu for Car Analysis -->
+    <menuitem id="menu_report_wiz" action="action_report_wiz" parent="menu_car_report"/>
+
+</odoo>

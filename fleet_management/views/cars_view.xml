@@ -28,16 +28,36 @@
 <!--            <form create="0" edit="0" delete="0">-->
             <form>
                 <header>
+                    <button name="%(action_report_wiz_alt)d" string='Reports' type="action"/>
+                    <button name="%(action_overall_report_wiz)d" string='Overall Reports' type="action"/>
                    <field name="state" widget="statusbar" options="{'clickable':'1'}"/>
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                    <button name="%(action_cars)d" string='Records' type="action" class="oe_stat_button" icon="fa-table"/>
-                    <button name="%(action_features)d" type="action" class="oe_stat_button"
-                            icon="fa-user"
+                    <div class="oe_button_box borders" name="button_box">
+                    <button name="%(action_cars)d" string='Records' type="action" class="oe_stat_button smart-buttons"
+                            icon="fa-table"
+                            style="border-radius:10px; border:1px solid"/>
+                    <button name="%(action_features)d" type="action" class="oe_stat_button smart-buttons"
+                            style="border-radius:10px; border:1px solid"
+                            icon="fa-book"
                             context="{'search_default_Model':active_id}">
-                            <field name="count_rec1" widget="statinfo"/>
+                        <field name="count_rec1" widget="statinfo"/>
                     </button>
+                    <button name="%(action_update_price_wiz2)d"
+                            string='Update Price'
+                            type="action"
+                            icon="fa-print"
+                            context="{'default_carid':active_id}"
+                            style="border-radius:10px; border:1px solid"
+                            class="smart-buttons"/>
+
+                    <button name="%(action_update_feature_wiz)d"
+                            string="Update"
+                            type="action"
+                            context="{'default_Model':active_id}"
+                            icon="fa-file-text-o"
+                            style="border-radius:10px; border:1px solid"
+                            class="smart-buttons"/>
                     </div>
                     <widget name="web_ribbon" title="Favourite" bg_color="bg-info" attrs="{'invisible': [('brand', '!=', 'tata')]}"/>
                     <widget name="web_ribbon" title="Ready" bg_color="bg-success" attrs="{'invisible': [('state', '!=', 'ready')]}"/>
@@ -47,7 +67,7 @@
                         <div class="name_styles">
                             <field name="name" placeholder="Car's Name"/>
                         </div>
-                        <field name='car_img' widget="image" class="oe_avatar" nolabel="1"/>
+                        <field name='car_img' widget="image" class="form-img" nolabel="1"/>
                     <separator string=""/>
                     <group colspan="4" col="4">
 <!--                         <label for="name"/>-->
@@ -94,12 +114,14 @@
 
                         <field name="parent_id" domain="[('id','!=', active_id)]"/>
 <!--                        <field name="awards" attrs="{'readonly' : [('name', '=', False)]}"/>-->
-                        <field name="view_comments"/>
+                        <field name="view_comments" widget="boolean_toggle"/>
 <!--                        <field name="current_user"/>-->
                         <field name="deal_on"/>
                         <field name="deal_off"/>
                         <field name="color" widget="color_picker"/>
                     </group>
+                </sheet>
+                <sheet>
                     <separator string="Others"/>
 
                     <notebook>
@@ -124,10 +146,13 @@
                                     </group>
                                 </form>
                             </field>
-                            <button name="unlink_all" string="Unlink all" type="object"/>
-                            <button name="link" string="link" type="object"/>
-                            <button name="create_feature" string="Add Feature" type="object"/>
-                            <button name="write_feature" string="Update Feature" type="object"/>
+                            <button name="update_features_new" type="object" string="Add Feature"
+                                    class="btn-grad" style="margin-right:5px; border-radius:20px"/>
+                            <button name="unlink_all" string="Unlink all" type="object" class="btn-grad1"
+                                    style="margin-right:5px; border-radius:20px"/>
+                            <button name="link" string="link" type="object" style="margin-right:5px; border-radius:20px"/>
+                            <button name="create_feature" string="Add Feature" type="object" style="margin-right:5px; border-radius:20px"/>
+                            <button name="write_feature" string="Update Feature" type="object" style="margin-right:5px; border-radius:20px"/>
                         </page>
                         <page name="pg_tmpl" string="Suppliers">
                             <field name="supplier_list" widget="many2many_tags"/>
@@ -153,12 +178,28 @@
                         <field name="message_ids"/>
                     </div>
                 </sheet>
-                <footer>
-                    <button name="create_supplier" string="Add Supplier" type="object"/>
-                    <button name="cur_user" string="Current User" type="object"/>
-                    <button name="term_button" string="Terminal Recs" type="object"/>
-                    <button name="del_feature" string="Delete Feature" type="object"/>
-                    <button name="button_seq" string="Create Sequence" type="object"/>
+                <footer style="padding-bottom:15px">
+                    <button name="create_supplier" string="Add Supplier" type="object"
+                            class="btn-grad"
+                            style="margin-left:300px; margin-right:7px; background-color:#b5b5b5; border-radius:20px"/>
+                    <button name="cur_user" string="Current User" type="object"
+                            class="btn-grad"
+                            style="color:white; margin-right:7px; background-color:#7d7d7d; border-radius:20px"/>
+                    <button name="term_button" string="Terminal Recs" type="object"
+                            class="btn-grad"
+                            style="margin-right:7px; background-color:#b5b5b5; border-radius:20px"/>
+                    <button name="del_feature" string="Delete Feature" type="object"
+                            class="btn-grad"
+                            style="color:white; margin-right:7px; background-color:#7d7d7d; border-radius:20px"/>
+                    <button name="button_seq" string="Create Sequence" type="object"
+                            class="btn-grad"
+                            style="margin-right:7px; background-color:#b5b5b5; border-radius:20px"/>
+<!--                 Exe - 7 Q - 7-->
+                    <button name="%(action_update_comp_val)d" type="action" string="Open Company"
+                            context="{'default_company_id':active_id}"
+                            class="btn-grad"
+                            style="color:white; margin-right:7px; background-color:#7d7d7d; border-radius:20px"/>
+
                 </footer>
             </form>
         </field>
@@ -396,6 +437,10 @@
                                     <!-- Using Anchor tag as button of object type to call a method -->
                                     <a role="menuitem" type="object" name="write_feature" class="dropdown-item">Update</a>
                                     <!-- Adding a seperator -->
+                                    <!--Ex 7 Ques 10-->
+                                    <div role="separator" class="dropdown-divider"/>
+                                    <a role="menuitem" type="action" name="%(fleet_management.action_update_price_wiz2)d" class="dropdown-item">Update Price
+                                    </a>
                                     <div role="separator" class="dropdown-divider"/>
                                     <!-- Color Picker on the Kanban view -->
                                     <ul class="oe_kanban_colorpicker" data-field="color"/>
@@ -527,6 +572,7 @@
                         <field name="over_fet"/>
                         <field name="avg_fet"/>
                         <field name="per_fet"/>
+                        <field name="company_id"/>
                     </group>
                 </sheet>
             </form>
@@ -537,7 +583,8 @@
         <field name="name">view.features.tree</field>
         <field name="model">fleet_management.features</field>
         <field name="arch" type="xml">
-            <tree editable="bottom" multi_edit="1">
+<!--            <tree editable="bottom" multi_edit="1">-->
+            <tree>
                 <field name="ID"/>
                 <field name="feature_name"/>
                 <field name="Model"/>
@@ -584,12 +631,14 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                <div class="oe_button_box" name="button_box">
+                <button name="open_tree" type="object" string="Open List" icon="fa-list" />
+                </div>
                     <group>
                         <field name="sup_id"/>
                         <field name="sup_name"/>
                         <field name="sup_age"/>
                         <field name="company_id"/>
-
                     </group>
                 </sheet>
             </form>

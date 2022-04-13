@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <template id="report_overall">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.internal_layout">
+                    <div class="page">
+                        <h1 style="text-align:center">Car Report</h1>
+                        <br/>
+                        <br/>
+                        <img t-if="o.car_img" t-att-src="image_data_uri(o.car_img)"
+                             style="max-height:85pt;max-width:90%" alt="Car Image"/>
+                        <table class="table">
+                            <tr>
+                                <td>Car ID:
+                                    <span t-field="o.car_id"/>
+                                </td>
+                                <br/>
+                                <td>Name :
+                                    <span t-field="o.name"/>
+                                </td>
+                                <br/>
+                            </tr>
+                            <tr>
+<!--                                <td>Price :-->
+<!--&lt;!&ndash;                                    <span t-if = "data.get('form', {})" t-esc="data['form']['price'][1]"/>&ndash;&gt;-->
+<!--                                    <span t-field='o.price'/>-->
+<!--                                </td>-->
+<!--                                <td>Awards Won :-->
+<!--                                    <span t-field="o.awards"/>-->
+<!--                                </td>-->
+<!--                                <td>Date of Manufacture :-->
+<!--                                    <span t-field="o.dom"/>-->
+<!--                                </td>-->
+                            </tr>
+                            <tr>
+                                <td>Car Type :
+                                    <span t-field="o.car_type" style="color:blue"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <!--                        <table>-->
+                        <!--                            <div class="col-auto col-3 mw-100 mb-2" t-if="o.company_id" name="feature">-->
+                        <!--                                <strong>Total Overall feature</strong>-->
+                        <!--                                <p class="m-0" t-esc="get_overall_fet(o.feature_id)"/>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="col-auto col-3 mw-100 mb-2" t-if="o.company_id" name="feature">-->
+                        <!--                                <strong>Total Average feature</strong>-->
+                        <!--                                <p class="m-0" t-esc="get_average_fet(o.feature_id)"/>-->
+                        <!--                            </div>-->
+                        <!--                        </table>-->
+                        <div>
+                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', barcode, 600, 100)"
+                                 style="width:350px;height:60px;"/>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

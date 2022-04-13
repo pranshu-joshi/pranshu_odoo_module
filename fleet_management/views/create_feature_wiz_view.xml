@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+
+    <record id="view_update_feature_wiz_form" model="ir.ui.view">
+        <field name="name">view.update.feature.wiz.form</field>
+        <field name="model">update.features.wiz</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="ID"/>
+                    <field name="Model"/>
+                    <field name="feature_name"/>
+                    <field name="fet_v"/>
+                    <field name="fet_p"/>
+                    <field name="sub_fet_v"/>
+                </group>
+                <footer>
+                    <button name="update_features"
+                            string="Update Feature"
+                            type="object"
+                            class="btn-primary"/>
+                    <button special="cancel"
+                            string="Close"
+                            class="btn-danger"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_update_feature_wiz" model="ir.actions.act_window">
+        <field name="name">Update Feature</field>
+        <field name="res_model">update.features.wiz</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>
+

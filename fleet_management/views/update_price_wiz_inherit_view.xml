@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <!--Ex 7 Ques 11-->
+    <!--Ex 7 Ques 12-->
+    <record id="view_update_price_form_inherit" model="ir.ui.view">
+        <field name="name">view.update.price.form.inherit</field>
+        <field name="model">update.price.wiz</field>
+        <field name="inherit_id" ref="fleet_management.view_update_price_wiz_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='price']" position="after">
+                <field name="condition"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

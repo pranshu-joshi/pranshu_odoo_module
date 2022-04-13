@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_overall_report_wiz_form" model="ir.ui.view">
+        <field name="name">view.overall.report.wiz.form</field>
+        <field name="model">report.overall.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="company_id"/>
+                    <field name="price"/>
+                    <field name="awards"/>
+                    <field name="dom"/>
+                </group>
+                <footer>
+                    <button name="html_report_overall"
+                            type="object"
+                            class="btn-primary"
+                            string="Overall Report"/>
+                    <button name="pdf_report_overall"
+                            type="object"
+                            class="btn-info"
+                            string="PDF Report"/>
+                    <button special="cancel"
+                            class="btn-danger"
+                            string="Close"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_overall_report_wiz" model="ir.actions.act_window">
+        <field name="name">Overall Report</field>
+        <field name="res_model">report.overall.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_company_id':1}</field>
+    </record>
+
+
+</odoo>
